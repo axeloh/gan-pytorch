@@ -57,13 +57,9 @@ decay_lr_params = {'decay': True,
                    'decay_every': 1,
                    'init_lr': lr}
 
-# To save model, specify path and at what epoch rate to save model
-# Model will be saved at format: {model_path}bigan_{model_nr}_epoch_{epoch}
 model_path = './saved_models/'
 save_every = args.save_every
-
 use_pretrained = args.pretrained_name != 'None'
-# Good models: bigan_87556_epoch400, bigan_47035_epoch200
 
 # Load and scale data
 train_x = train_data.data.float()
@@ -121,6 +117,6 @@ show_samples(imgs.reshape([100, 28, 28, 1]), title=f'MNIST samples')
 # Plot GAN loss during training
 plot_gan_training(gan_losses, 'Losses', './results/gan_losses.png')
 
-# Plot samples and reconstruction-pairs
+# Show samples and reconstruction-pairs
 show_samples(samples * 255.0, fname=f'results/samples_epoch{bigan.epoch}.png', title=f'BiGAN generated samples after {bigan.epoch} epochs')
 show_samples(reconstructions * 255.0, nrow=20, fname=f'results/reconstructions_epochs{bigan.epoch}.png', title=f'BiGAN reconstructions after {bigan.epoch} epochs')
