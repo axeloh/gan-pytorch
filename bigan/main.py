@@ -9,7 +9,7 @@ sys.path.append(path)
 
 from utils import *
 from torchvision.datasets import MNIST, FashionMNIST
-from models import Generator, Encoder, Discriminator, LinearClassifier
+from bigan_models import Generator, Encoder, Discriminator, LinearClassifier
 from bigan import BiGAN
 
 

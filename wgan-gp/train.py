@@ -6,7 +6,7 @@ path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(path)
 
 from utils import *
-from models import Generator, Critic
+from wgan_models import Generator, Critic
 
 
 def get_gradient_penalty(D, real_x, gen_x, lambda_=10, device=torch.device('cuda')):
