@@ -127,7 +127,8 @@ show_samples(reconstructions * 255.0, nrow=20, fname=f'results/reconstructions_e
 
 #### Train and evaluate linear classifier for classifying digits ####
 #### Compare trained encoder to random encoder ####
-clf_n_epochs = 2
+#### One uses the trained encoder from BiGAN, the other uses a random encoder ####
+clf_n_epochs = 10
 data_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True)
 test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False)
 
@@ -143,13 +144,13 @@ E_pretrained = bigan.E
 clf_pretrained = LinearClassifier(E_pretrained, z_dim, use_cuda=use_cuda)
 clf_pretrained.train(data_loader, test_loader, clf_n_epochs)
 
-# Cross Entropy Losses during training
+# Cross Entropy Losses on test data during training
 pretrained_losses = np.array(clf_pretrained.val_losses)
 random_losses = np.array(clf_random.val_losses)
 plot_bigan_supervised(pretrained_losses, random_losses, title='Linear classification losses', fname='results/supervised_losses.png')
 
 
-# Evaluate accuracy
+# Evaluate accuracy on test data
 random_preds = clf_random.predict(test_x.to(device)).cpu()
 random_accuracy = accuracy_score(test_y, random_preds)
 print(f"Final test accuracy using Random encoder: {random_accuracy}")
