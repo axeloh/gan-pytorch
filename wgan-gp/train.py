@@ -1,6 +1,13 @@
 
+# To use utils located in parent directory
+import sys
+import os
+path = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+sys.path.append(path)
+
 from utils import *
 from models import Generator, Critic
+
 
 def get_gradient_penalty(D, real_x, gen_x, lambda_=10, device=torch.device('cuda')):
     """
@@ -186,7 +193,7 @@ if __name__ == '__main__':
     # Train, then show and save generated samples
     train_data = train_data.data.transpose((0, 3, 1, 2)) / 255.0
     d_losses, samples, epochs_trained = train(train_data)
-    show_samples(samples[:100] * 255.0, title=f'CIFAR-10 generated samples after {epochs_trained} epochs', fname=f'./samples/cifar10_epochs{epochs_trained}')
+    show_samples(samples[:100] * 255.0, title=f'CIFAR-10 generated samples after {epochs_trained} epochs', fname=f'./samples/cifar10_epochs2222{epochs_trained}')
 
 
 
