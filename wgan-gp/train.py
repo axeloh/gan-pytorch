@@ -2,7 +2,7 @@
 # To use utils located in parent directory
 import sys
 import os
-path = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(path)
 
 from utils import *
@@ -47,7 +47,7 @@ def train(train_data):
 
     Returns
     - a (# of training iterations,) numpy array of WGAN critic train losses evaluated every minibatch
-    - a (1000, 32, 32, 3) numpy array of samples from your model in [0, 1].
+    - a (1000, 32, 32, 3) numpy array of results from your model in [0, 1].
         The first 100 will be displayed, and the rest will be used to calculate the Inception score.
     """
     print(train_data.shape)
@@ -88,7 +88,7 @@ def train(train_data):
 
     if load_pretrained:
         print("Loading pretrained/partially trained model..")
-        model_name = "gan_4460_epoch150"  # Set path to model if loading model
+        model_name = "gan_4460_epoch230"  # Set path to model if loading model
         checkpoint = torch.load(model_path + model_name, map_location=device)
         D.load_state_dict(checkpoint['d_state_dict'])
         G.load_state_dict(checkpoint['g_state_dict'])
@@ -165,7 +165,7 @@ def train(train_data):
             }, save_path)
     print(f'Training done in {int(time.time() - train_start)}s.')
 
-    # Get samples from trained generator
+    # Get results from trained generator
     G.eval(), D.eval()
     with torch.no_grad():
         z = torch.randn(1000, z_dim, device=device)
@@ -173,27 +173,28 @@ def train(train_data):
         samples = samples.permute(0, 2, 3, 1)
         samples = scale(samples, 0, 1)
 
+    epochs_trained = start_epoch + n_epochs
     plt.plot([i for i in range(len(d_losses_per_gen_update))], np.array(d_losses_per_gen_update), label="critic loss")
     plt.plot([i for i in range(len(g_losses))], np.array(g_losses), label="generator loss")
     plt.plot([i for i in range(len(gps))], np.array(gps), label="gradient penalty")
     plt.ylabel("Loss"), plt.xlabel('Generator update')
     plt.legend()
-    # plt.savefig('./results/q2_all_losses.png')
+    plt.savefig('./results/losses.png')
     plt.show()
 
-    return np.array(d_losses), np.array(samples.cpu()), start_epoch + n_epochs
+    return np.array(d_losses), np.array(samples.cpu()), epochs_trained
 
 
 if __name__ == '__main__':
-    # Load CIFAR-10 and show some samples
+    # Load CIFAR-10 and show some results
     train_data = torchvision.datasets.CIFAR10("./data", transform=torchvision.transforms.ToTensor(), train=True, download=True)
     imgs = train_data.data[:100]
     show_samples(imgs, title=f'CIFAR-10 Samples')
 
-    # Train, then show and save generated samples
+    # Train, then show and save generated results
     train_data = train_data.data.transpose((0, 3, 1, 2)) / 255.0
     d_losses, samples, epochs_trained = train(train_data)
-    show_samples(samples[:100] * 255.0, title=f'CIFAR-10 generated samples after {epochs_trained} epochs', fname=f'./samples/cifar10_epochs2222{epochs_trained}')
+    show_samples(samples[:100] * 255.0, title=f'CIFAR-10 generated samples after {epochs_trained} epochs', fname=f'./results/samples_epochxxx{epochs_trained}')
 
 
 

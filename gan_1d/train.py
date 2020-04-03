@@ -12,12 +12,12 @@ def train(train_data, use_non_saturing):
 
     Returns
     - a (# of training iterations,) numpy array of discriminator losses evaluated every minibatch
-    - a numpy array of size (5000,) of samples drawn from your model at epoch #1
+    - a numpy array of size (5000,) of results drawn from your model at epoch #1
     - a numpy array of size (1000,) linearly spaced from [-1, 1]; hint: np.linspace
     - a numpy array of size (1000,), corresponding to the discriminator output (after sigmoid)
         at each location in the previous array at epoch #1
 
-    - a numpy array of size (5000,) of samples drawn from your model at the end of training
+    - a numpy array of size (5000,) of results drawn from your model at the end of training
     - a numpy array of size (1000,) linearly spaced from [-1, 1]; hint: np.linspace
     - a numpy array of size (1000,), corresponding to the discriminator output (after sigmoid)
         at each location in the previous array at the end of training
