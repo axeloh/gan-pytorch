@@ -22,6 +22,7 @@ from sklearn.metrics import accuracy_score
 from tqdm import trange, tqdm
 from torchvision.utils import make_grid
 from os.path import join, dirname, exists
+import torchvision.transforms as transforms
 
 
 def init_weight(m):
@@ -56,3 +57,15 @@ def show_samples(samples, fname=None, nrow=10, title='Samples'):
     if fname is not None:
         savefig(fname)
     plt.show()
+
+def plot_gan_training(losses, title, fname):
+    plt.figure()
+    n_itr = len(losses)
+    xs = np.arange(n_itr)
+
+    plt.plot(xs, losses, label='loss')
+    plt.legend()
+    plt.title(title)
+    plt.xlabel('Training Iteration')
+    plt.ylabel('Loss')
+    savefig(fname)
