@@ -1,5 +1,4 @@
-import torch
-import torch.nn as nn
+from utils import *
 
 class Generator(nn.Module):
     """ Generator.
@@ -77,3 +76,57 @@ class Discriminator(nn.Module):
     def forward(self, x):
         y = self.fc(x)
         return y
+
+
+
+class LinearClassifier(nn.Module):
+    """ Simple Linear Classifier, y ≈ 𝐿(𝐸(𝑥)
+    Will be used to compare learned Encoder E from BiGAN with 𝐸𝑟𝑎𝑛𝑑𝑜𝑚
+    """
+    def __init__(self, encoder, z_dim, num_classes=10, use_cuda=True):
+        super().__init__()
+        self.device = torch.device('cuda') if use_cuda else None
+        self.use_cuda = use_cuda
+        self.E = encoder.to(self.device)
+        self.E.eval()
+        self.ln = nn.Linear(z_dim, num_classes).to(self.device)
+        self.optimizer = torch.optim.SGD(self.ln.parameters(), lr=0.01)
+        self.val_losses = []
+
+    def forward(self, x):
+        x_flat = x.view(x.size(0), -1)
+        with torch.no_grad():
+            z = self.E(x_flat)
+        logits = self.ln(z)
+        return logits
+
+    def train(self, train_loader, test_loader, n_epochs):
+        for epoch in range(1, n_epochs+1):
+            for batch, targets in Bar(train_loader):
+                targets = targets.cuda() if self.use_cuda else targets
+                batch = batch.to(self.device)
+                logits = self.forward(batch).unsqueeze(-1)
+                loss = F.cross_entropy(logits, targets.unsqueeze(-1))
+                loss.backward()
+                self.optimizer.step()
+                self.optimizer.zero_grad()
+            # Validation loss
+            val_loss = self.val_loss(test_loader)
+            self.val_losses.append(val_loss)
+
+    def predict(self, x):
+        with torch.no_grad():
+            logits = self.forward(x)
+        preds = torch.argmax(logits, dim=1)
+        return preds
+
+    def val_loss(self, test_loader):
+        val_loss = []
+        with torch.no_grad():
+            for (batch, targets) in test_loader:
+                targets = targets.to(self.device)
+                batch = batch.to(self.device)
+                logits = self.forward(batch).unsqueeze(-1)
+                loss = F.cross_entropy(logits, targets.unsqueeze(-1))
+                val_loss.append(loss.item())
+        return np.mean(np.array(val_loss))

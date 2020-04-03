@@ -9,7 +9,7 @@ sys.path.append(path)
 
 from utils import *
 from torchvision.datasets import MNIST, FashionMNIST
-from models import Generator, Encoder, Discriminator
+from models import Generator, Encoder, Discriminator, LinearClassifier
 from bigan import BiGAN
 
 
@@ -66,6 +66,7 @@ train_x = train_data.data.float()
 test_x = test_data.data.float()
 train_x = scale(train_x, -1, 1)
 test_x = scale(test_x, -1, 1)
+test_y = test_data.targets.long()
 
 train_x_loader = torch.utils.data.DataLoader(train_x, batch_size=batch_size, shuffle=True)
 img_dim = train_x.size(1)
@@ -92,6 +93,7 @@ if not use_pretrained:
     print(f"Training BiGAN model for {n_epochs} epochs..")
     bigan.train(train_x_loader, n_epochs)
 
+
 #### EVALUATE ####
 bigan.set_to_eval_mode()
 with torch.no_grad():
@@ -111,8 +113,8 @@ gan_losses, samples, reconstructions = np.array(bigan.d_losses), np.array(sample
 
 
 # Show real samples
-imgs = train_data.data[:100]
-show_samples(imgs.reshape([100, 28, 28, 1]), title=f'MNIST samples')
+imgs = train_x[:100]
+show_samples(imgs.reshape([100, 28, 28, 1]) * 255.0, title=f'MNIST samples')
 
 # Plot GAN loss during training
 plot_gan_training(gan_losses, 'Losses', './results/gan_losses.png')
@@ -120,3 +122,39 @@ plot_gan_training(gan_losses, 'Losses', './results/gan_losses.png')
 # Show samples and reconstruction-pairs
 show_samples(samples * 255.0, fname=f'results/samples_epoch{bigan.epoch}.png', title=f'BiGAN generated samples after {bigan.epoch} epochs')
 show_samples(reconstructions * 255.0, nrow=20, fname=f'results/reconstructions_epochs{bigan.epoch}.png', title=f'BiGAN reconstructions after {bigan.epoch} epochs')
+
+
+
+#### Train and evaluate linear classifier for classifying digits ####
+#### Compare trained encoder to random encoder ####
+clf_n_epochs = 2
+data_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True)
+test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False)
+
+# Using Random encoder
+print("Training classifier with random encoder..")
+E_random = Encoder(img_dim, hid_dim, z_dim).to(device)
+clf_random = LinearClassifier(E_random, z_dim, use_cuda=use_cuda)
+clf_random.train(data_loader, test_loader, clf_n_epochs)
+
+# Using Trained encoder
+print("Training classifier with trained BiGAN encoder..")
+E_pretrained = bigan.E
+clf_pretrained = LinearClassifier(E_pretrained, z_dim, use_cuda=use_cuda)
+clf_pretrained.train(data_loader, test_loader, clf_n_epochs)
+
+# Cross Entropy Losses during training
+pretrained_losses = np.array(clf_pretrained.val_losses)
+random_losses = np.array(clf_random.val_losses)
+plot_bigan_supervised(pretrained_losses, random_losses, title='Linear classification losses', fname='results/supervised_losses.png')
+
+
+# Evaluate accuracy
+random_preds = clf_random.predict(test_x.to(device)).cpu()
+random_accuracy = accuracy_score(test_y, random_preds)
+print(f"Final test accuracy using Random encoder: {random_accuracy}")
+
+pretrained_preds = clf_pretrained.predict(test_x.to(device)).cpu()
+pretrained_accuracy = accuracy_score(test_y, pretrained_preds)
+print(f"Final test accuracy using BiGAN encoder: {pretrained_accuracy}")
+

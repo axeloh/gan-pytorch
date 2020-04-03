@@ -69,3 +69,16 @@ def plot_gan_training(losses, title, fname):
     plt.xlabel('Training Iteration')
     plt.ylabel('Loss')
     savefig(fname)
+
+
+def plot_bigan_supervised(pretrained_losses, random_losses, title, fname):
+    plt.figure()
+    xs = np.arange(len(pretrained_losses))
+    plt.plot(xs, pretrained_losses, label='bigan')
+    xs = np.arange(len(random_losses))
+    plt.plot(xs, random_losses, label='random init')
+    plt.legend()
+    plt.title(title)
+    savefig(fname)
+    plt.show()
+
