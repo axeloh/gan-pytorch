@@ -7,6 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.data as data
 import torch.optim as optim
+import torchvision
 from scipy.stats import norm
 from tqdm import trange, tqdm_notebook
 import torch.nn.functional as F
@@ -19,6 +20,8 @@ from barbar import Bar
 from datetime import date
 from sklearn.metrics import accuracy_score
 from tqdm import trange, tqdm
+from torchvision.utils import make_grid
+from os.path import join, dirname, exists
 
 
 def init_weight(m):
@@ -33,3 +36,23 @@ def scale(x, a, b):
 
 def log(x):
     return torch.log(x + 1e-8)
+
+def savefig(fname, show_figure=False):
+    if not exists(dirname(fname)):
+        os.makedirs(dirname(fname))
+    plt.tight_layout()
+    plt.savefig(fname)
+    if show_figure:
+        plt.show()
+
+def show_samples(samples, fname=None, nrow=10, title='Samples'):
+    samples = (torch.FloatTensor(samples) / 255).permute(0, 3, 1, 2)
+    grid_img = make_grid(samples, nrow=nrow)
+    plt.figure()
+    plt.title(title)
+    plt.imshow(grid_img.permute(1, 2, 0))
+    plt.axis('off')
+
+    if fname is not None:
+        savefig(fname)
+    plt.show()
