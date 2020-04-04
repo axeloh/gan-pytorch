@@ -86,7 +86,6 @@ class LinearClassifier(nn.Module):
     def __init__(self, encoder, z_dim, num_classes=10, use_cuda=True):
         super().__init__()
         self.device = torch.device('cuda') if use_cuda else None
-        self.use_cuda = use_cuda
         self.E = encoder.to(self.device)
         self.E.eval()
         self.ln = nn.Linear(z_dim, num_classes).to(self.device)
@@ -103,7 +102,7 @@ class LinearClassifier(nn.Module):
     def train(self, train_loader, test_loader, n_epochs):
         for epoch in range(1, n_epochs+1):
             for batch, targets in Bar(train_loader):
-                targets = targets.cuda() if self.use_cuda else targets
+                targets = targets.to(self.device)
                 batch = batch.to(self.device)
                 logits = self.forward(batch).unsqueeze(-1)
                 loss = F.cross_entropy(logits, targets.unsqueeze(-1))
