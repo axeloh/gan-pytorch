@@ -23,6 +23,9 @@ from tqdm import trange, tqdm
 from torchvision.utils import make_grid
 from os.path import join, dirname, exists
 import torchvision.transforms as transforms
+import scipy.ndimage
+from PIL import Image as PILImage
+import cv2
 
 
 def init_weight(m):
@@ -82,3 +85,44 @@ def plot_bigan_supervised(pretrained_losses, random_losses, title, fname):
     savefig(fname)
     plt.show()
 
+def plot_cyclegan_samples_and_recons(m1, c1, m2, c2, m3, c3, dname1, dname2):
+    m1, m2, m3 = m1.repeat(3, axis=3), m2.repeat(3, axis=3), m3.repeat(3, axis=3)
+    a_reconstructions = np.concatenate([m1, c1, m2], axis=0)
+    b_reconstructions = np.concatenate([c2, m3, c3], axis=0)
+
+    show_samples(a_reconstructions * 255.0, nrow=20,
+                 fname=f'results/{dname1}.png',
+                 title=f'Source domain: {dname1.upper()}')
+    show_samples(b_reconstructions * 255.0, nrow=20,
+                 fname=f'results/{dname2}.png',
+                 title=f'Source domain: {dname2.upper()}')
+
+
+def get_colored_mnist(data):
+    # from https://www.wouterbulten.nl/blog/tech/getting-started-with-gans-2-colorful-mnist/
+    # Read Lena image
+    lena = PILImage.open('../cyclegan/results/lena.jpg')
+
+    # Resize
+    batch_resized = np.asarray([scipy.ndimage.zoom(image, (2.3, 2.3, 1), order=1) for image in data])
+
+    # Extend to RGB
+    batch_rgb = np.concatenate([batch_resized, batch_resized, batch_resized], axis=3)
+
+    # Make binary
+    batch_binary = (batch_rgb > 0.5)
+
+    batch = np.zeros((data.shape[0], 28, 28, 3))
+
+    for i in range(data.shape[0]):
+        # Take a random crop of the Lena image (background)
+        x_c = np.random.randint(0, lena.size[0] - 64)
+        y_c = np.random.randint(0, lena.size[1] - 64)
+        image = lena.crop((x_c, y_c, x_c + 64, y_c + 64))
+        image = np.asarray(image) / 255.0
+
+        # Invert the colors at the location of the number
+        image[batch_binary[i]] = 1 - image[batch_binary[i]]
+
+        batch[i] = cv2.resize(image, (0, 0), fx=28 / 64, fy=28 / 64, interpolation=cv2.INTER_AREA)
+    return batch.transpose(0, 3, 1, 2)
