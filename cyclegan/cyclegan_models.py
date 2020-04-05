@@ -17,7 +17,7 @@ def deconv(c_in, c_out, kernel_size, stride=2, padding=1, bn=True):
 
 
 class G_AB(nn.Module):
-    """Generator for transfering from regular mnist to colored mnist
+    """Generator for transfering from regular mnist to svhn
     Input: (b, 1, 32, 32)
     Output: (b, 1, 32, 32)
     """
@@ -45,7 +45,7 @@ class G_AB(nn.Module):
 
 
 class G_BA(nn.Module):
-    """Generator for transfering from colored mnist to regular mnist
+    """Generator for transfering from svhn to regular mnist
     Input: (b, 3, 32, 32)
     Output: (b, 1, 32, 32)
     """
@@ -97,7 +97,7 @@ class D_A(nn.Module):
 
 
 class D_B(nn.Module):
-    """Discriminator classifying real colored mnist from fake colored mnist
+    """Discriminator classifying real svhn from fake svhn
     Input: (b, 3, 32, 32)
     Output: (b, 1)
     """

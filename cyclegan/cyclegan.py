@@ -5,10 +5,10 @@ class CycleGAN(nn.Module):
 
     def __init__(self, g_ab, g_ba, d_a, d_b, g_optim, d_optim, config):
         super().__init__()
-        self.g_ab = g_ab  # mnist  -> cmnist      (generator)
-        self.g_ba = g_ba  # cmnist -> mnist       (generator)
+        self.g_ab = g_ab  # mnist  -> svhn      (generator)
+        self.g_ba = g_ba  # svhn -> mnist       (generator)
         self.d_a = d_a  # classifying mnist     (discriminator)
-        self.d_b = d_b  # classifying cmnist    (discriminator)
+        self.d_b = d_b  # classifying svhn    (discriminator)
         self.g_optim = g_optim  # generators optimizer
         self.d_optim = d_optim  # discriminators optimizer
 
@@ -25,17 +25,17 @@ class CycleGAN(nn.Module):
         self.d_losses = []
         self.g_losses = []
 
-    def train(self, mnist_loader, cmnist_loader, n_epochs):
+    def train(self, mnist_loader, svhn_loader, n_epochs):
         for epoch in range(1, n_epochs + 1):
-            self._train_epoch(mnist_loader, cmnist_loader, epoch)
+            self._train_epoch(mnist_loader, svhn_loader, epoch)
 
-    def _train_epoch(self, mnist_loader, cmnist_loader, epoch):
+    def _train_epoch(self, mnist_loader, svhn_loader, epoch):
         epoch_start = time.time()
         mnist_iter = iter(mnist_loader)
-        cmnist_iter = iter(cmnist_loader)
-        iter_per_epoch = min(len(mnist_iter), len(cmnist_iter))  # In case different size of datasets
+        svhn_iter = iter(svhn_loader)
+        iter_per_epoch = min(len(mnist_iter), len(svhn_iter))  # In case different size of datasets
         for _ in range(iter_per_epoch):
-            d_loss, g_loss = self._train_step(mnist_iter, cmnist_iter)
+            d_loss, g_loss = self._train_step(mnist_iter, svhn_iter)
             self.d_losses.append(d_loss)
             self.g_losses.append(g_loss)
 

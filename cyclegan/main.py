@@ -6,19 +6,17 @@ warnings.filterwarnings("ignore")
 # To use utils located in parent directory
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(path)
-
 from utils import *
 from torchvision.datasets import MNIST, SVHN
 from cyclegan_models import G_AB, G_BA, D_A, D_B
 from cyclegan import CycleGAN
 
 
-
 def str_to_bool(s):
     return s.lower() in ['true']
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # Model params
