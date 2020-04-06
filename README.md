@@ -1,13 +1,26 @@
-# GANs
-A PyTorch implementation of different GANs on a variety of datasets.
+# Credits
 Models based on numerous papers:
 - Original GAN paper: [Generative Adversarial Nets](https://arxiv.org/abs/1406.2661) by Goodfellow et. al.
 - WGAN-GP is based on [Improved Training of Wasserstein GANs](https://arxiv.org/abs/1704.00028) by Gulrajani et. al., with an architecture for CIFAR-10 based on [Spectral Normalization For Generative Adversarial Networks](https://arxiv.org/pdf/1802.05957.pdf) by Miyato et. al.
 - BiGAN is based on [Adversarial Feature Learning](https://arxiv.org/pdf/1605.09782.pdf) by Donahue et. al.
 - CycleGAN is based on [Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks](https://arxiv.org/pdf/1703.10593.pdf) by Zhu et. al.
+
 Models by no means serve to reproduce the original results in the papers.
 
-# GAN on 1D toy data
+# GANs in general
+From the abstract of Generative Adversarial Nets](https://arxiv.org/abs/1406.2661):
+
+> We propose a new framework for estimating generative models via an adversar-
+ial process, in which we simultaneously train two models: a generative model *G*
+that captures the data distribution, and a discriminative model *D* that estimates
+the probability that a sample came from the training data rather than *G*. The train-
+ing procedure for *G* is to maximize the probability of *D* making a mistake. This
+framework corresponds to a minimax two-player game. In the space of arbitrary
+functions *G* and *D*, a unique solution exists, with *G* recovering the training data
+distribution and *D* equal to 0.5 everywhere.
+
+To learn the generator's distribution *p<sub>g</sub>* over data **x**, we define a prior on input noise variables *p<sub>z</sub>(**z**)*, then represent a mapping to data space as *G(<z; src="https://i.imgur.com/Z17Vu5N.png" width="10"/><sub>g</sub>)*.
+
 
 
 
