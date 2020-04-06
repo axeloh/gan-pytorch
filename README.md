@@ -27,7 +27,7 @@ To learn the generator's distribution *p<sub>g</sub>* over data **x**, we define
 First, the original minmax GAN objective (above) is used to train the generator and the discriminator. Both the generator and discriminator were modeled using an MLP.
 Often, in practice, when using the original minmax objective, the generator suffers from saturation. What this means is that if the generator cannot learn as quickly as the discriminator, the discriminator wins, the game ends, and the model cannot be trained effectively. This is because early in training, when G is poor, D can reject samples with high confidence and the loss function will not provide sufficient gradients for G to learn well. To overcome this it is common to use a modification to the generator loss, know as the non-saturing formulation of the GAN objective. It is a subtle change that involves the generator to maximize the probability of images being predicted as real, instead of minimizing the probability of images being predicted as fake.
 
-Formally, the losses for the generator L<sup>(G)</sup> and the discriminator L<sup>(D)</sup> is now the following:
+Formally, the loss for the generator L<sup>(G)</sup> and the discriminator L<sup>(D)</sup> is now the following:
 
 <img src="https://i.imgur.com/69NGkI9.png" width="300"/>
 
