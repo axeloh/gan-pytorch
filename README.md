@@ -36,11 +36,13 @@ The results show samples drawn from the generator after epoch 1, and after train
 *real* shows the distribution of real data, *fake* shows distribution of generated samples, *discrim* shows the output from the discriminator for each point. For the ideal generator, the discriminator cannot distinguish between real and generated samples, and thus outputs 0.5 everywhere. From the results we see that the generator in both cases has almost learned the data distribution perfectly. 
 
 Using original GAN minmax objective:
+
 After 1 epoch | After training 
 :--- | :--- 
 ![](https://i.imgur.com/hSjlgy0.png) | ![](https://i.imgur.com/aQCLQ4f.png)
 
 Using non-saturing formulation of GAN objective:
+
 After 1 epoch | After training 
 :--- | :--- 
 ![](https://i.imgur.com/8GFx7C0.png) | ![](https://i.imgur.com/XWkuqIz.png)
