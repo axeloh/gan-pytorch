@@ -31,7 +31,7 @@ Formally, the losses for the generator L<sup>(G)</sup> and the discriminator L<s
 
 <img src="https://i.imgur.com/69NGkI9.png" width="300"/>
 
-<img src="https://i.imgur.com/jrB0U8F.png" width="300"/>
+<img src="https://i.imgur.com/jrB0U8F.png" width="170"/>
 
 #### Results
 The results show samples drawn from the generator after epoch 1, and after training is finished. 
