@@ -1,1 +1,3 @@
 theme: jekyll-theme-cayman
+title: GANs
+description: A Collection of different GANs (Generative Adversarial Networks), including WGAN-GP, BiGAN, and CycleGAN.
