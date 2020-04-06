@@ -10,11 +10,9 @@ Models by no means serve to reproduce the original results in the papers.
 # GANs in general
 From the abstract of [Generative Adversarial Nets](https://arxiv.org/abs/1406.2661):
 
-> We propose a new framework for estimating generative models via an adversar-
-ial process, in which we simultaneously train two models: a generative model *G*
+> We propose a new framework for estimating generative models via an adversarial process, in which we simultaneously train two models: a generative model *G*
 that captures the data distribution, and a discriminative model *D* that estimates
-the probability that a sample came from the training data rather than *G*. The train-
-ing procedure for *G* is to maximize the probability of *D* making a mistake. This
+the probability that a sample came from the training data rather than *G*. The training procedure for *G* is to maximize the probability of *D* making a mistake. This
 framework corresponds to a minimax two-player game. In the space of arbitrary
 functions *G* and *D*, a unique solution exists, with *G* recovering the training data
 distribution and *D* equal to 0.5 everywhere.
