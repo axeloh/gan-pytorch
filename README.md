@@ -50,15 +50,15 @@ After 1 epoch | After training
 
 
 ## WGAN-GP on CIFAR-10
-
+TODO
 
 
 ## BiGAN on MNIST
-
+TODO
 
 
 ## CycleGAN on MNIST and SVHN/Colored MNIST
-
+TODO
 
 
 
