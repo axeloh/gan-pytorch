@@ -59,7 +59,7 @@ We use the Adam optimizer with <img src="https://i.imgur.com/8zrB5hO.png" width=
 
 #### Results
 The model was trained on the CIFAR-10 dataset. Below are samples generated after 30 and 230 epochs, respectively. 
-It got an Inception Score of 8.042 out of 10.  
+It got an Inception Score of **8.042** out of 10.  
 
 After 30 epoch | After 230 epochs 
 :--- | :--- 
@@ -90,7 +90,7 @@ Samples | Reconstructions
 ##### Testing the representations
 We want to see how good a linear classifier *L* we can learn such that <img src="https://i.imgur.com/yW52Q60.png" width="90"/>, where *y* is the appropriate label. We fix *E* and learn a weight matrix *W* such that the linear classifier is composed of passing *x* through *E*, then multiplying by *W*, then applying a softmax nonlinearity. This is trained via gradient descent with cross-entropy loss.
 
-As a baseline, we randomly initialize another network <img src="https://i.imgur.com/8ju9r2H.png" width="70"/> with the same architecture, fix its weights, and train a linear classifier on top, as done in the previous part. Using the BiGAN encoder we got an test accuracy of 0.8662, while with the random encoder the accuracy was 0.3269.
+As a baseline, we randomly initialize another network <img src="https://i.imgur.com/8ju9r2H.png" width="70"/> with the same architecture, fix its weights, and train a linear classifier on top, as done in the previous part. Using the BiGAN encoder we got an test accuracy of **0.8662**, while with the random encoder the accuracy was **0.3269**.
 
 
 ## CycleGAN on MNIST and SVHN/Colored MNIST
