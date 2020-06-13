@@ -54,6 +54,9 @@ optimized. [Arjovsky & Bottou](https://arxiv.org/abs/1701.04862) proposes using 
 Wasserstein distance is a measure of distance between two distributions. It is also called Earth Mover's Distance because it informally can be interpreted as the minimum energy cost of moving and transforming a pile of dirt in the shape of one probability distribution to the shape of the other distribution. 
 WGAN requires that the discriminator must lie within the space of 1-Lipschitz functions, which the authors enforce through weight clipping. This clipping has later been shown to lead to undesirable behaviour. [Gulrajani et. al.](https://arxiv.org/abs/1704.00028) proposes using  *Gradient Penalty* (GP) instead, and shows that it does not suffer the same problems. This resulted in the new GAN called WGAN-GP.
 
+#### Results
+
+
 ## BiGAN on MNIST
 TODO
 
