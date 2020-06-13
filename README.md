@@ -79,6 +79,16 @@ We closely follow the MNIST architecture outlined in the original BiGAN paper, w
 ##### Hyperparameters
 We make several modifications to what is listed in the BiGAN paper. We apply l2 weight decay to all weights and decay the step size 𝛼 linearly to 0 over the course of training. Weights are initialized via the default PyTorch manner.
 
+
+##### Testing the representations
+We want to see how good a linear classifier *L* we can learn such that <img src="https://i.imgur.com/yW52Q60.png" width="90"/>, where *y* is the appropriate label. We fix *E* and learn a weight matrix *W* such that the linear classifier is composed of passing *x* through *E*, then multiplying by *W*, then applying a softmax nonlinearity. This is trained via gradient descent with cross-entropy loss.
+
+As a baseline, we randomly initialize another netowrk 
+
+
+#### Samples  
+
+
 ##### Reconstructions
 We take the first 20 images from the MNIST training set and display the reconstructions 
 
