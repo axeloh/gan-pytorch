@@ -54,11 +54,34 @@ optimized. [Arjovsky & Bottou](https://arxiv.org/abs/1701.04862) proposes using 
 Wasserstein distance is a measure of distance between two distributions. It is also called Earth Mover's Distance because it informally can be interpreted as the minimum energy cost of moving and transforming a pile of dirt in the shape of one probability distribution to the shape of the other distribution. 
 WGAN requires that the discriminator must lie within the space of 1-Lipschitz functions, which the authors enforce through weight clipping. This clipping has later been shown to lead to undesirable behaviour. [Gulrajani et. al.](https://arxiv.org/abs/1704.00028) proposes using  *Gradient Penalty* (GP) instead, and shows that it does not suffer the same problems. This resulted in the new GAN called WGAN-GP.
 
+We use the CIFAR-10 architecture from the [SN-GAN paper](#inspiration) , with <img src="https://i.imgur.com/z9uM38O.png" width="70"/>, <img src="https://i.imgur.com/xsAtngp.png" width="110"/>. Instead of upsampling via transposed convolutions and downsampling via pooling or striding, we use DepthToSpace and SpaceToDepth methods (see repo) for changing the spatial configuration of the hidden states. 
+We use the Adam optimizer with <img src="https://i.imgur.com/8zrB5hO.png" width="270"/>, a batch size of 256 and 128 filters within the ResBlocks. Model was trained for approximately 40,000 gradient steps, with the learning rate linearly annealed to 0 over the course of training. 
+
 #### Results
+The model was trained on the CIFAR-10 dataset. Below are samples generated after 30 and 230 epochs, respectively. 
+It got an Inception Score of 8.042 out of 10.  
+
+After 30 epoch | After 230 epochs 
+:--- | :--- 
+![](/wgan-gp/results/samples_epochs30.png) | ![](/wgan-gp/results/samples_epochs230.png)
 
 
-## BiGAN on MNIST
-TODO
+
+## Representation Learning with BiGAN on MNIST
+In BiGAN, in addition to training a generator *G* and a discriminator *D*, we train an encoder *E* that maps from real images *x* to latent codes *z*. The discriminator must now learn to jointly identify fake *z*, fake *x*, and paired *(x,z)* that don't belong together. In the original [BiGAN paper](#inspiration), they prove that the optimal *E* learns to invert the generative mapping <img src="https://i.imgur.com/qvVgI24.png" width="70"/>. Our overall minimax term is now: 
+
+<img src="https://i.imgur.com/GyR6Rxn.png" width="600"/>
+
+##### Architecture
+We closely follow the MNIST architecture outlined in the original BiGAN paper, with one modification: instead of 
+<img src="https://i.imgur.com/cc07tEg.png" width="130"/>, we use <img src="https://i.imgur.com/U2FQC6H.png" width="80"/>, with <img src="https://i.imgur.com/Xa7dRkH.png" width="60"/>.
+
+##### Hyperparameters
+We make several modifications to what is listed in the BiGAN paper. We apply l2 weight decay to all weights and decay the step size 𝛼 linearly to 0 over the course of training. Weights are initialized via the default PyTorch manner.
+
+##### Reconstructions
+We take the first 20 images from the MNIST training set and display the reconstructions 
+
 
 
 ## CycleGAN on MNIST and SVHN/Colored MNIST
