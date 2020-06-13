@@ -82,13 +82,15 @@ We make several modifications to what is listed in the BiGAN paper. We apply l2 
 #### Samples and reconstructions
 Below are samples generated after training was complete, as well as reconstruction pairs.
 
-<img src="/bigan/results/samples_post_training.png" width="400" />
-<img src="/bigan/results/reconstructions_epochs400.png" width="500" />
+Samples | Reconstructions 
+:--- | :--- 
+<img src="/bigan/results/samples_post_training.png" width="300" /> | <img src="/bigan/results/reconstructions_epochs400.png" width="500" />
+
 
 ##### Testing the representations
 We want to see how good a linear classifier *L* we can learn such that <img src="https://i.imgur.com/yW52Q60.png" width="90"/>, where *y* is the appropriate label. We fix *E* and learn a weight matrix *W* such that the linear classifier is composed of passing *x* through *E*, then multiplying by *W*, then applying a softmax nonlinearity. This is trained via gradient descent with cross-entropy loss.
 
-As a baseline, we randomly initialize another network <img src="https://i.imgur.com/8ju9r2H.png" width="70"/> with the same architecture, fix its weights, and train a linear classifier on top, as done in the previous part. The 
+As a baseline, we randomly initialize another network <img src="https://i.imgur.com/8ju9r2H.png" width="70"/> with the same architecture, fix its weights, and train a linear classifier on top, as done in the previous part. Using the BiGAN encoder we got an test accuracy of 0.8662, while with the random encoder the accuracy was 0.3269.
 
 
 ## CycleGAN on MNIST and SVHN/Colored MNIST
