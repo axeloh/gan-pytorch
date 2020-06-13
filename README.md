@@ -77,21 +77,18 @@ We closely follow the MNIST architecture outlined in the original BiGAN paper, w
 <img src="https://i.imgur.com/cc07tEg.png" width="130"/>, we use <img src="https://i.imgur.com/U2FQC6H.png" width="80"/>, with <img src="https://i.imgur.com/Xa7dRkH.png" width="60"/>.
 
 ##### Hyperparameters
-We make several modifications to what is listed in the BiGAN paper. We apply l2 weight decay to all weights and decay the step size 𝛼 linearly to 0 over the course of training. Weights are initialized via the default PyTorch manner.
+We make several modifications to what is listed in the BiGAN paper. We apply l2 weight decay to all weights and decay the step size 𝛼 linearly to 0 over the course of training. Weights are initialized via the default PyTorch manner. The model was trained for about 400 epochs (around 100,000 generator updates).
 
+#### Samples and reconstructions
+Below are samples generated after training was complete, as well as reconstruction pairs.
+
+<img src="/bigan/results/samples_post_training.png" width="400" />
+<img src="/bigan/results/reconstructions_epochs400.png" width="500" />
 
 ##### Testing the representations
 We want to see how good a linear classifier *L* we can learn such that <img src="https://i.imgur.com/yW52Q60.png" width="90"/>, where *y* is the appropriate label. We fix *E* and learn a weight matrix *W* such that the linear classifier is composed of passing *x* through *E*, then multiplying by *W*, then applying a softmax nonlinearity. This is trained via gradient descent with cross-entropy loss.
 
-As a baseline, we randomly initialize another netowrk 
-
-
-#### Samples  
-
-
-##### Reconstructions
-We take the first 20 images from the MNIST training set and display the reconstructions 
-
+As a baseline, we randomly initialize another network <img src="https://i.imgur.com/8ju9r2H.png" width="70"/> with the same architecture, fix its weights, and train a linear classifier on top, as done in the previous part. The 
 
 
 ## CycleGAN on MNIST and SVHN/Colored MNIST
