@@ -48,10 +48,11 @@ After 1 epoch | After training
 ![](https://i.imgur.com/8GFx7C0.png) | ![](https://i.imgur.com/XWkuqIz.png)
 
 
-
 ## WGAN-GP on CIFAR-10
-TODO
-
+In general, GANs can be very hard to train, much because of the convergence properties of the value function being
+optimized. [Arjovsky & Bottou](https://arxiv.org/abs/1701.04862) proposes using Wasserstein distance to produce a value function which has better theoretical properties than the original.
+Wasserstein distance is a measure of distance between two distributions. It is also called Earth Mover's Distance because it informally can be interpreted as the minimum energy cost of moving and transforming a pile of dirt in the shape of one probability distribution to the shape of the other distribution. 
+WGAN requires that the discriminator must lie within the space of 1-Lipschitz functions, which the authors enforce through weight clipping. This clipping has later been shown to lead to undesirable behaviour. [Gulrajani et. al.](https://arxiv.org/abs/1704.00028) proposes using  *Gradient Penalty* (GP) instead, and shows that it does not suffer the same problems. This resulted in the new GAN called WGAN-GP.
 
 ## BiGAN on MNIST
 TODO
