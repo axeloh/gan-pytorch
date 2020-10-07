@@ -24,8 +24,8 @@ from torchvision.utils import make_grid
 from os.path import join, dirname, exists
 import torchvision.transforms as transforms
 import scipy.ndimage
-from PIL import Image as PILImage
-import cv2
+#from PIL import Image as PILImage
+#import cv2
 
 
 def init_weight(m):
